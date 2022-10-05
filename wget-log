@@ -1,0 +1,11 @@
+--2022-10-04 23:08:16--  https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/65/c558c0f50211e5a52493c7e6aee302/baysian_statistics.v2a.png?auto=format%2Ccompress
+Resolving d3njjcbhbojbot.cloudfront.net (d3njjcbhbojbot.cloudfront.net)... 18.164.78.123, 18.164.78.115, 18.164.78.72, ...
+Connecting to d3njjcbhbojbot.cloudfront.net (d3njjcbhbojbot.cloudfront.net)|18.164.78.123|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 69317 (68K) [image/jpeg]
+Saving to: ‘bayes.png’
+
+bayes.png                            0%[                                                                ]       0  --.-KB/s               bayes.png                          100%[===============================================================>]  67.69K  --.-KB/s    in 0.03s   
+
+2022-10-04 23:08:16 (2.20 MB/s) - ‘bayes.png’ saved [69317/69317]
+
