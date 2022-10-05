@@ -14,6 +14,7 @@ OPTIONS:
  -s  --seed      random number seed               = 937162211]]
 
 -- ## Objects
+local obj=g.obj
 local COLS,DATA,NUM,ROW,SYM=obj"COLS",obj"DATA",obj"NUM",obj"ROWs",obj"SYM"
 
 -- `SYM`s summarize a stream of symbols.
@@ -43,7 +44,7 @@ function COLS:new(names)
   self.y={}        -- depedent columns (that are not skipped)
   for c,s in pairs(names) do
     local col = push(self.all, -- NUMerics start with Uppercase. 
-                    (s:find"^[A-Z]*" and NUM or Sym)(c,s))
+                    (s:find"^[A-Z]*" and NUM or SYM)(c,s))
     if not s:find":$" then -- some columns are skipped
        push(s:find"[!+-]" and self.y or self.x, col) -- some cols are goal cols
        if s:find"!$" then self.klass=col end end end end
@@ -81,7 +82,7 @@ function SYM:div(    e,fun)
   return e end 
 
   -- Return how much `x` might belong to `self`. 
-function Sym:like(x,prior)
+function SYM:like(x,prior)
    return ((self._has[x] or 0)+the.m*prior) / (self.n+the.m) end
 
 -- ## NUM

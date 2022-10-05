@@ -1,18 +1,19 @@
 g=require"glua"
 
 -- ## Test Engine
+local g=require"glua"
+local oo=g.oo
+local the=require("inbc").the
+local NUM=require("inbc").NUM
+local SYM=require("inbc").SYM
+local DATA=require("inbc").DATA
+
 local go={}
-
-function go.BAD() print(go.dont.have.this.field) end
-
--- Sort all test names.
-function go.LIST(   t)
-  t={}; for k,_ in pairs(eg) do t[1+#t]=k end; table.sort(t); return t end
 
 function go.the() oo(the); return true end
 
 function go.sym(  sym,entropy,mode)
-  sym= Sym()
+  sym= SYM()
   for _,x in pairs{"a","a","a","a","b","b","c"} do sym:add(x) end
   mode, entropy = sym:mid(), sym:div()
   entropy = (1000*entropy)//1/1000
@@ -23,7 +24,7 @@ function go.sym(  sym,entropy,mode)
 -- and "standard deviation" (and the latter is zero when all the nums 
 -- are the same).
 function go.num(  num,mid,div)
-  num=Num()
+  num=NUM()
   for i=1,100 do num:add(i) end
   mid,div = num:mid(), num:div()
   print(mid ,div)
@@ -32,7 +33,7 @@ function go.num(  num,mid,div)
 -- Nums store only a sample of the numbers added to it (and that storage 
 -- is done such that the kept numbers span the range of inputs).
 function go.bignum(  num)
-  num=Num()
+  num=NUM()
   the.nums = 32
   for i=1,1000 do num:add(i) end
   oo(num:nums())
@@ -46,14 +47,14 @@ function go.csv(   n)
 
 -- Can I load a csv file into a Data?.
 function go.data(   d)
-  d = Data("../data/auto93.csv")
+  d = DATA("../data/auto93.csv")
   for _,col in pairs(d.cols.y) do oo(col) end
   return true
 end
 
 -- Print some stats on columns.
 function go.stats(   data,mid,div)
-  data = Data("../data/auto93.csv")
+  data = DATA("../data/auto93.csv")
   div  = function(col) return col:div() end
   mid  = function(col) return col:mid() end
   print("xmid", o( data:stats(2, data.cols.x, mid)))
@@ -65,14 +66,13 @@ end
 
 -- distance functions
 function go.around(    data,around)
-  data = Data("../data/auto93.csv")
+  data = DATA("../data/auto93.csv")
   around = data:around(data.rows[1] )
   for i=1,380,40 do print(around[i].dist, o(around[i].row.cells)) end
   return true end
 
 --  Start up
-the = cli(the)  
-runs(the,go)
-os.exit(fails) 
+the = g.cli(the)  
+os.exit(g.run(go, the))
 -- That's all folks.
 
