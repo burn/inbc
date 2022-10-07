@@ -62,7 +62,13 @@ end
 
 -- Print some stats on columns.
 function go.nb()
-  local data = NB("../data/diabetes.csv") end
+  local nb = NB("../data/diabetes.csv") 
+  for k,v in pairs(nb.one) do
+    print("")
+    print(k, #v.rows)
+    print("\tmid", o( v:stats(2, v.cols.x))) 
+    print("\tdiv", o( v:stats(2, v.cols.x,"div"))) end 
+  end
   
 --  Start up
 the = g.cli(the)  
