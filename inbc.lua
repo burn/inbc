@@ -166,35 +166,31 @@ function DATA:like(row, nklasses, nrows)
 -- -----------------------------------------------------------------------------
 function NB:new(src,report)
   self.all=DATA()  -- all rows
-  self.one={}      -- all rows, divided by the klass symbol
+  self.datas={}      -- all rows, divided by the klass symbol
   self.nklasses=0  -- number of different classes
   self.report = report or  -- what to do with classification results
                 function(got,want) print(got,want) end
   load(src, self) end
 
 function NB:add(t)
-  self:classify(t)   -- incrementally, must classify before updating (else we are cheating)
-  self:update(t) end
+  if (#self.all.rows) > the.wait then
+    self:classify(t) end  -- incrementally, must classify before updating (else we are cheating)
+  self:klassExists(t):add(t)
+  self.all:add(t) end
 
 function NB:classify(t)
-  self.all:add(t)  
-  local klass,k,one
-  local one = self:exists(klass(t))
-  one:add(t)  end
+  most,got = -math.huge,nil
+  for k,data in pairs(self.datas) do 
+    tmp = data:like(row, self.nKlasses, #self.all.rows) 
+    if tmp > most then most,got = tmp,k end end
+  self.report(got, klass(t)) end 
  
-function NB:update(t)
-   self:klassExists(t)
-
 function NB:klassExists(t)
   t = t.cells and t.cells or t
   k = t[self.all.cols.klass.at] 
-  if not self.one[k] then 
+  if not self.datas[k] then 
     self.nklasses = self.nklasses+1
-    self.one[k]   = self.all:clone() end 
-  return self.one[k] end
-
-function NB:classify(t)
-  if (#self.all.rows) > the.wait then
-    self.report(self:klass(t),k) end end
+    self.datas[k]   = self.all:clone() end 
+  return self.data[k] end
 
 return {the=the, DATA=DATA, ROW=ROW, NUM=NUM, SYM=SYM, COLS=COLS, NB=NB}
